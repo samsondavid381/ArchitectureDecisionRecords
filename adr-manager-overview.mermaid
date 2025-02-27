@@ -1,0 +1,59 @@
+graph TD
+    subgraph "ADR Manager Application"
+        User["👤 User/Architect"]
+        
+        subgraph "Frontend (React + TypeScript)"
+            Dashboard["📊 Dashboard<br>Overview of architecture decisions"]
+            ADRList["📋 ADR List<br>All architecture decisions"]
+            ADRDetail["📄 ADR Detail<br>Single decision with full context"]
+            ADRForm["📝 ADR Form<br>Create/Edit decisions"]
+            InsightsList["💡 Insights List<br>Collected architectural thoughts"]
+            QuickCapture["⚡ Quick Capture<br>Rapidly document ideas"]
+            Map["🗺️ Knowledge Map<br>Visualize decision relationships"]
+        end
+        
+        subgraph "Backend (Convex)"
+            DB[(Database)]
+            ADRsAPI["ADR API<br>CRUD operations"]
+            InsightsAPI["Insights API<br>CRUD operations"]
+        end
+        
+        User -->|"Views and manages<br>architecture decisions"| Dashboard
+        User -->|"Creates new<br>formal decisions"| ADRForm
+        User -->|"Captures quick<br>architectural thoughts"| QuickCapture
+        User -->|"Browses all<br>decisions"| ADRList
+        User -->|"Views details<br>of a decision"| ADRDetail
+        User -->|"Reviews collected<br>insights"| InsightsList
+        User -->|"Visualizes<br>relationships"| Map
+        
+        QuickCapture -->|"Can be converted to"| ADRForm
+        InsightsList -->|"Links to related"| ADRDetail
+        
+        ADRForm -->|"Creates/Updates"| ADRsAPI
+        ADRDetail -->|"Reads/Updates"| ADRsAPI
+        ADRList -->|"Reads"| ADRsAPI
+        QuickCapture -->|"Creates"| InsightsAPI
+        InsightsList -->|"Reads/Updates"| InsightsAPI
+        
+        ADRsAPI <-->|"Persists"| DB
+        InsightsAPI <-->|"Persists"| DB
+        
+        classDef frontend fill:#f9f9ff,stroke:#9999ff,stroke-width:2px;
+        classDef backend fill:#fffff9,stroke:#ffcc99,stroke-width:2px;
+        classDef database fill:#f9fff9,stroke:#99cc99,stroke-width:2px;
+        classDef user fill:#fff9f9,stroke:#ff9999,stroke-width:2px;
+        
+        class Dashboard,ADRList,ADRDetail,ADRForm,InsightsList,QuickCapture,Map frontend;
+        class ADRsAPI,InsightsAPI backend;
+        class DB database;
+        class User user;
+    end
+
+    subgraph "Purpose"
+        direction TB
+        Problem["❓ Problem:<br>Architecture decisions get lost<br>or documented inconsistently"]
+        Solution["✅ Solution:<br>Structured system to capture,<br>document and track decisions"]
+        Benefits["🌟 Benefits:<br>- Knowledge preservation<br>- Consistent documentation<br>- Decision traceability<br>- Insight evolution"]
+        
+        Problem --> Solution --> Benefits
+    end
